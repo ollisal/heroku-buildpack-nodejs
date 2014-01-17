@@ -84,6 +84,12 @@ elif test -d $cache_dir/node/node_modules; then
 
 fi
 
+if test -d $cache_dir/.cache/bower; then
+  echo "-----> Restoring bower cache directory from cache"
+  mkdir -p /.cache
+  cp -r $cache_dir/.cache/bower /.cache/
+fi
+
 # Scope config var availability only to `npm install`
 (
   if [ -d "$env_dir" ]; then
@@ -131,9 +137,15 @@ fi
 # Copy goodies to the cache
 cp -r $build_dir/.heroku $cache_dir/node
 
+status "Caching bower cache directory for future builds"
+rm -rf $cache_dir/.cache/bower
+mkdir -p $cache_dir/.cache
+test -d /.cache/bower && cp -r /.cache/bower $cache_dir/.cache/
+
 status "Cleaning up node-gyp and npm artifacts"
 rm -rf "$build_dir/.node-gyp"
 rm -rf "$build_dir/.npm"
+rm -rf "/.cache/bower"
 
 # If Procfile is absent, try to create one using `npm start`
 if [ ! -e $build_dir/Procfile ]; then
