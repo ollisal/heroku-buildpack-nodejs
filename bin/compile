@@ -9,7 +9,7 @@ if [ ! -z "$ENABLE_BUILDPACK_DEBUG" ]; then
 fi
 
 # Configure directories
-build_dir=$1
+build_dir=$1/ui
 cache_dir=$2
 env_dir=$3
 bp_dir=$(cd $(dirname $0); cd ..; pwd)
