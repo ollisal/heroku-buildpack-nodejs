@@ -2,7 +2,11 @@
 
 set -e            # fail fast
 set -o pipefail   # don't ignore exit codes when piping output
-# set -x          # enable debugging
+
+# enable debugging if ENABLE_BUILDPACK_DEBUG env var is set
+if [ ! -z "$ENABLE_BUILDPACK_DEBUG" ]; then
+  set -x
+fi
 
 # Configure directories
 build_dir=$1
