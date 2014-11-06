@@ -100,6 +100,9 @@ fi
   status "Installing dependencies"
   # Make npm output to STDOUT instead of its default STDERR
   npm install --userconfig $build_dir/.npmrc --production 2>&1 | indent
+
+  # Install grunt-cli as it's not present globally as usual
+  npm install grunt-cli 2>&1 | indent
 )
 
 if [ -f "$build_dir/bower.json" -a -f "$build_dir/node_modules/.bin/bower" ]; then
