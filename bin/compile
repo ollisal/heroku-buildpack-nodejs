@@ -107,13 +107,13 @@ if [ -f "$build_dir/bower.json" -a -f "$build_dir/node_modules/.bin/bower" ]; th
   $build_dir/node_modules/.bin/bower --allow-root install 2>&1 | indent
 fi
 
-if [ -f "$build_dir/Gruntfile.js" -a -f "$build_dir/node_modules/.bin/grunt" ]; then
-  status "Running grunt build"
-  grunt_options=""
-  if [ ! -z "$GRUNT_PROFILE" ]; then
-    grunt_options="-profile=$GRUNT_PROFILE"
+if [ -f "$build_dir/gulpfile.js" -a -f "$build_dir/node_modules/.bin/gulp" ]; then
+  status "Running gulp install"
+  gulp_options=""
+  if [ ! -z "$GULP_PROFILE" ]; then
+    gulp_options="-profile=$GULP_PROFILE"
   fi
-  $build_dir/node_modules/.bin/grunt $grunt_options build 2>&1 | indent
+  $build_dir/node_modules/.bin/gulp $gulp_options install 2>&1 | indent
 fi
 
 # Persist goodies like node-version in the slug
@@ -146,21 +146,6 @@ status "Cleaning up node-gyp and npm artifacts"
 rm -rf "$build_dir/.node-gyp"
 rm -rf "$build_dir/.npm"
 rm -rf "/.cache/bower"
-
-# If Procfile is absent, try to create one using `npm start`
-if [ ! -e $build_dir/Procfile ]; then
-  npm_start=$(cat $build_dir/package.json | $bp_dir/vendor/jq -r .scripts.start)
-
-  # If `scripts.start` is set in package.json, or a server.js file
-  # is present in the app root, then create a default Procfile
-  if [ "$npm_start" != "null" ] || [ -f $build_dir/server.js ]; then
-    status "No Procfile found; Adding npm start to new Procfile"
-    echo "web: npm start" > $build_dir/Procfile
-  else
-    status "Procfile not found and npm start script is undefined"
-    protip "Create a Procfile or specify a start script in package.json"
-  fi
-fi
 
 # Update the PATH
 status "Building runtime environment"
