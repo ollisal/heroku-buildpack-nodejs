@@ -115,8 +115,8 @@ fi
 if [ -f "$build_dir/gulpfile.js" -a -f "$build_dir/node_modules/.bin/gulp" ]; then
   status "Running gulp install"
   gulp_options=""
-  if [ ! -z "$GULP_PROFILE" ]; then
-    gulp_options="-profile=$GULP_PROFILE"
+  if [ ! -z "$GULP_ENV" ]; then
+    gulp_options="--env=$GULP_ENV"
   fi
   $build_dir/node_modules/.bin/gulp $gulp_options install 2>&1 | indent
 fi
