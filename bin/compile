@@ -58,7 +58,7 @@ trap 'handle_failure' ERR
 ### Check initial state
 
 [ -e "$BUILD_DIR/node_modules" ] && PREBUILD=true || PREBUILD=false
-[ -f "$BUILD_DIR/yarn.lock" ] && YARN=true || YARN=false
+([ ! -z "$ALWAYS_USE_YARN" ] || [ -f "$BUILD_DIR/yarn.lock" ]) && YARN=true || YARN=false
 [ -f "$BUILD_DIR/package-lock.json" ] && NPM_LOCK=true || NPM_LOCK=false
 
 ### Failures that should be caught immediately
