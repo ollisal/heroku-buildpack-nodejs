@@ -186,6 +186,11 @@ build_dependencies() {
     popd
   elif $YARN; then
     yarn_node_modules "$BUILD_DIR"
+  elif $LERNA; then
+    pushd .
+    npm_node_modules $BUILD_DIR/..
+    npx lerna bootstrap
+    popd
   elif $PREBUILD; then
     echo "Prebuild detected (node_modules already exists)"
     npm_rebuild "$BUILD_DIR"
